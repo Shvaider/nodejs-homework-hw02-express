@@ -26,6 +26,10 @@ const userSchema = new Schema(
       enum: ["starter", "pro", "business"],
       default: "starter",
     },
+    avatarURL: {
+      type: String,
+      required: true,
+    },
     token: {
       type: String,
       default: null,
@@ -45,6 +49,9 @@ const loginSchema = Joi.object({
   email: Joi.string().pattern(emailRegexp).required(),
   password: Joi.string().min(6).required(),
 });
+const subscriptionShema = Joi.object({
+  subscription: Joi.string().valid("starter", "pro", "business").required(),
+})
 
 const schemas = {
   registerSchema,
@@ -56,4 +63,5 @@ const User = model("user", userSchema);
 module.exports = {
    User,
   schemas,
+  subscriptionShema
   };
