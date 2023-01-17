@@ -3,9 +3,13 @@ const { Contact } = require("../../models/contact");
 const getAll = async (req, res, next) => {
   const { _id: owner } = req.user;
 
-  const { page = 1, limit = 10 } = req.query;
+  const { page = 1, limit = 10, favorite } = req.query;
   const skip = (page - 1) * limit;
   // const filter = typeof favorite === "boolean" ? { favorite } : {};
+  const query = { owner };
+// eslint-disable-next-line no-unneeded-ternary
+  query.favorite = favorite ? favorite : { $in: [true, false]};
+  
   const result = await Contact.find({ owner }, "-createdAt, - updatedAt", {
     skip,
     limit,
